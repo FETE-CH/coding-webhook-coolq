@@ -1,0 +1,10 @@
+# Editor directories and files
+.idea
+.vscode
+
+bin/
+obj/
+/packages/
+
+.DS_Store
+.git/
