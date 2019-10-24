@@ -20,17 +20,20 @@ namespace pushService.Controllers {
 
         // post /api/webhook
         [HttpPost]
-        public IActionResult WebHook([FromBody] Payload payload) {
+        public IActionResult WebHook([FromBody] PingPayload codingPayload) {
             // logger.LogDebug();
             StringValues eventName = Request.Headers["X-Coding-Event"];
             StringValues id = Request.Headers["X-Coding-Delivery"];
             StringValues signature = Request.Headers["X-Coding-Signature"];
-            // Payload h = (Payload)payload;
-            logger.LogDebug($"eventName:{eventName},id:{id}");
-            logger.LogDebug(payload.ToString());
-            logger.LogDebug(payload.GetType().Name);
 
-            return Ok(payload);
+            logger.LogDebug($"eventName:{eventName},id:{id},signature:{signature}");
+
+            // logger.LogDebug(payload.GetType().Name);
+            string json = JsonSerializer.Serialize(codingPayload);
+            logger.LogDebug(json);
+
+
+            return Ok(1);
         }
     }
 }
