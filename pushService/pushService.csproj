@@ -13,4 +13,8 @@
         <Content Update="nlog.config" CopyToOutputDirectory="PreserveNewest" />
     </ItemGroup>
 
+    <ItemGroup>
+      <Folder Include="log" />
+    </ItemGroup>
+
 </Project>

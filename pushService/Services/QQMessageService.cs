@@ -16,18 +16,18 @@ namespace pushService.Services {
     public class QQMessageService {
         private HttpClient HttpClient { get; }
 
-        private readonly IConfiguration config;
-        private readonly ILogger<QQMessageService> logger;
+        private readonly IConfiguration _config;
+        private readonly ILogger<QQMessageService> _logger;
 
         public QQMessageService(IHttpClientFactory httpClientFactory, IConfiguration configuration, ILogger<QQMessageService> logger) {
-            config = configuration;
-            this.logger = logger;
+            _config = configuration;
+            _logger = logger;
 
-            string coolQ = config["QQBotSetting:address"];
-            string port = config["QQBotSetting:port"];
+            string coolQ = _config["QQBotSetting:address"];
+            string port = _config["QQBotSetting:port"];
             HttpClient = httpClientFactory.CreateClient();
             HttpClient.BaseAddress = new Uri($"http://{coolQ}:{port}");
-            logger.LogDebug($"http://{coolQ}:{port}");
+            _logger.LogDebug($"http://{coolQ}:{port}");
             HttpClient.Timeout = new TimeSpan(TimeSpan.TicksPerSecond * 5);
         }
 
@@ -80,7 +80,7 @@ namespace pushService.Services {
                 return -1;
             }
 
-            int groupNumber = int.Parse(config["QQBotSetting:targetQQGroup"]);
+            int groupNumber = int.Parse(_config["QQBotSetting:targetQQGroup"]);
             var parameter = new {group_id = groupNumber, message = msg};
             StringContent content = new StringContent(JsonSerializer.Serialize(parameter), Encoding.UTF8);
             
