@@ -81,7 +81,6 @@ namespace pushService.Services {
             }
 
             int groupNumber = int.Parse(config["QQBotSetting:targetQQGroup"]);
-            logger.LogDebug(groupNumber.ToString());
             var parameter = new {group_id = groupNumber, message = msg};
             StringContent content = new StringContent(JsonSerializer.Serialize(parameter), Encoding.UTF8);
             

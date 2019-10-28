@@ -4,6 +4,7 @@
 
 bin/
 obj/
+log/
 /packages/
 
 .DS_Store
