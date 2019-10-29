@@ -77,7 +77,7 @@ namespace pushService.Controllers {
                 _logger.LogDebug("成员操作");
             }
 
-            return Ok();
+            return Ok(200);
         }
     }
 }
