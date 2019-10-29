@@ -5,6 +5,7 @@
 bin/
 obj/
 log/
+dist/
 /packages/
 
 .DS_Store

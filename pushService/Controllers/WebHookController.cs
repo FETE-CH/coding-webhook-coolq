@@ -21,14 +21,14 @@ namespace pushService.Controllers {
         public readonly QQMessageService qqMessageService;
         
         public WebHookController(ILogger<WebHookController> logger, IConfiguration configuration, QQMessageService qqService) {
-            this._logger = logger;
+            _logger = logger;
             _config = configuration;
             qqMessageService = qqService;
         }
 
         // post /api/webhook
         [HttpPost]
-        public async Task<OkObjectResult> WebHook([FromBody] object codingPayload) {
+        public async Task<IActionResult> WebHook([FromBody] object codingPayload) {
             StringValues eventName = Request.Headers["X-Coding-Event"];
             StringValues id = Request.Headers["X-Coding-Delivery"];
             StringValues signature = Request.Headers["X-Coding-Signature"];
@@ -77,7 +77,7 @@ namespace pushService.Controllers {
                 _logger.LogDebug("成员操作");
             }
 
-            return Ok(payload);
+            return Ok();
         }
     }
 }
