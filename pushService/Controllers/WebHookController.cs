@@ -19,7 +19,7 @@ namespace pushService.Controllers {
         private readonly IConfiguration _config;
         private readonly ILogger<WebHookController> _logger;
         public readonly QQMessageService qqMessageService;
-        
+
         public WebHookController(ILogger<WebHookController> logger, IConfiguration configuration, QQMessageService qqService) {
             _logger = logger;
             _config = configuration;
@@ -47,19 +47,27 @@ namespace pushService.Controllers {
 
             if (eventName.Equals("ci")) {
                 string actionName = payload.GetProperty("action").GetString();
+
                 // string ciName = payload.GetProperty("ci").GetProperty("name").GetString();
                 string branchName = payload.GetProperty("ci").GetProperty("branch_selector").GetString();
                 _logger.LogDebug(actionName);
-                
+
                 if (actionName.Equals("complete_build")) {
-                    //构建成功
+                    //构建完成
+                    string buildStatus = payload.GetProperty("ci").GetProperty("build").GetProperty("status").GetString();
+                    bool buildResult = payload.GetProperty("ci").GetProperty("build").GetProperty("build_result").GetBoolean();
                     string env = _config[$"gitBranchMap:{branchName}"];
-                    int messageId = await qqMessageService.SendGroupMessage($"恭喜！{repoName} 项目{env}环境构建成功！");
-                    _logger.LogInformation($"消息已发送: {messageId}");
+                    if (buildStatus.Equals("FAILED") || !buildResult) {
+                        // 构建失败
+                        int messageId = await qqMessageService.SendGroupMessage($"{repoName} 项目{env}环境构建失败\n请速去查看！");
+                        _logger.LogInformation($"消息已发送: {messageId}");
+                    } else {
+                        // 构建成功
+                        int messageId = await qqMessageService.SendGroupMessage($"恭喜！{repoName} 项目{env}环境构建成功！");
+                        _logger.LogInformation($"消息已发送: {messageId}");
+                    }
                 } else if (actionName.Equals("cancel_build")) {
                     //取消构建
-                } else if (actionName.Equals("failed_build")) {
-                    // 构建失败
                 }
             }
 
