@@ -55,9 +55,9 @@ namespace pushService.Controllers {
                 if (actionName.Equals("complete_build")) {
                     //构建完成
                     string buildStatus = payload.GetProperty("ci").GetProperty("build").GetProperty("status").GetString();
-                    bool buildResult = payload.GetProperty("ci").GetProperty("build").GetProperty("build_result").GetBoolean();
+                    // bool buildResult = payload.GetProperty("ci").GetProperty("build").GetProperty("build_result").GetBoolean();
                     string env = _config[$"gitBranchMap:{branchName}"];
-                    if (buildStatus.Equals("FAILED") || !buildResult) {
+                    if (!buildStatus.Equals("SUCCEED")) {
                         // 构建失败
                         int messageId = await qqMessageService.SendGroupMessage($"{repoName} 项目{env}环境构建失败\n请速去查看！");
                         _logger.LogInformation($"消息已发送: {messageId}");
